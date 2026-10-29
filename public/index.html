@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>AI Career Growth Advisor</title>
+
+    <!-- Google Fonts: Clash Display + DM Sans -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,700;1,9..40,300&family=Syne:wght@400;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+
+    <!-- jsPDF for PDF download (loaded from CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+    <!-- Link to our CSS file -->
+    <link rel="stylesheet" href="/css/style.css" />
+  </head>
+  <body>
+    <!-- =============================================
+         HEADER
+    ============================================= -->
+    <header class="site-header">
+      <div class="header-inner">
+        <div class="logo">
+          <span class="logo-icon">◈</span>
+          <span class="logo-text">CareerAI</span>
+        </div>
+        <p class="header-tagline">Your Intelligent Career Compass</p>
+      </div>
+      <div class="header-orb orb-1"></div>
+      <div class="header-orb orb-2"></div>
+    </header>
+
+    <!-- =============================================
+         MAIN CONTENT
+    ============================================= -->
+    <main class="main-content">
+      <!-- ---- INPUT SECTION ---- -->
+      <section class="form-section" id="formSection">
+        <div class="section-label">STEP 01</div>
+        <h2 class="section-title">Tell us about yourself</h2>
+        <p class="section-subtitle">
+          Fill in your details and our AI will craft a personalized career roadmap for you.
+        </p>
+
+        <form id="careerForm" class="career-form">
+          <!-- Row 1: Name + Education -->
+          <div class="form-row">
+            <div class="form-group">
+              <label for="name">Your Name <span class="required">*</span></label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                placeholder="e.g., Arjun Sharma"
+                required
+              />
+            </div>
+            <div class="form-group">
+              <label for="education">Education Level <span class="required">*</span></label>
+              <select id="education" name="education">
+                <option value="">Select your level</option>
+                <option value="12th Grade / HSC">12th Grade / HSC</option>
+                <option value="1st Year BTech/BCA">1st Year BTech/BCA</option>
+                <option value="2nd Year BTech/BCA">2nd Year BTech/BCA</option>
+                <option value="3rd Year BTech/BCA" selected>3rd Year BTech/BCA</option>
+                <option value="Final Year BTech/BCA">Final Year BTech/BCA</option>
+                <option value="Fresh Graduate">Fresh Graduate</option>
+                <option value="Working Professional">Working Professional</option>
+              </select>
+            </div>
+          </div>
+
+          <!-- Row 2: Skills -->
+          <div class="form-group full-width">
+            <label for="skills">Current Skills <span class="required">*</span></label>
+            <input
+              type="text"
+              id="skills"
+              name="skills"
+              placeholder="e.g., Python, HTML, CSS, basic JavaScript, C programming"
+              required
+            />
+            <span class="hint">List everything you know, even basics count!</span>
+          </div>
+
+          <!-- Row 3: Interests -->
+          <div class="form-group full-width">
+            <label for="interests">Your Interests <span class="required">*</span></label>
+            <input
+              type="text"
+              id="interests"
+              name="interests"
+              placeholder="e.g., building apps, data analysis, gaming, problem solving, design"
+              required
+            />
+            <span class="hint">What excites you? Think beyond tech too.</span>
+          </div>
+
+          <!-- Row 4: Career Goals -->
+          <div class="form-group full-width">
+            <label for="goals">Career Goals <span class="required">*</span></label>
+            <textarea
+              id="goals"
+              name="goals"
+              rows="3"
+              placeholder="e.g., I want to get a job at a top tech company, build my own startup, or work as a freelancer. I'm interested in web development or AI/ML."
+              required
+            ></textarea>
+          </div>
+
+          <!-- Row 5: Experience -->
+          <div class="form-group full-width">
+            <label for="experience">Any Prior Experience?</label>
+            <input
+              type="text"
+              id="experience"
+              name="experience"
+              placeholder="e.g., Built a to-do app, completed a Python course on Coursera, no experience yet"
+            />
+            <span class="hint">Optional — any projects, internships, or courses you've done</span>
+          </div>
+
+          <!-- Submit Button -->
+          <button type="submit" class="btn-generate" id="submitBtn">
+            <span class="btn-text">Generate My Career Plan</span>
+            <span class="btn-icon">→</span>
+          </button>
+        </form>
+      </section>
+
+      <!-- ---- LOADING SECTION (hidden initially) ---- -->
+      <section class="loading-section" id="loadingSection" style="display: none">
+        <div class="loader-wrapper">
+          <div class="loader-ring"></div>
+          <div class="loader-ring loader-ring--2"></div>
+          <div class="loader-ring loader-ring--3"></div>
+        </div>
+        <p class="loading-title">Analyzing your profile...</p>
+        <p class="loading-sub" id="loadingMessage">Our AI is crafting your personalized roadmap</p>
+      </section>
+
+      <!-- ---- RESULTS SECTION (hidden initially) ---- -->
+      <section class="results-section" id="resultsSection" style="display: none">
+        <!-- Results Header -->
+        <div class="results-header">
+          <div class="section-label">YOUR PLAN IS READY</div>
+          <h2 class="results-title" id="resultTitle">Career Growth Plan</h2>
+          <p class="results-summary" id="resultSummary"></p>
+
+          <!-- Action Buttons -->
+          <div class="action-buttons">
+            <button class="btn-secondary" id="newPlanBtn">
+              ← Start Over
+            </button>
+            <button class="btn-download" id="downloadPdfBtn">
+              ↓ Download PDF
+            </button>
+          </div>
+        </div>
+
+        <!-- ---- CAREER PATHS CARD ---- -->
+        <div class="result-card" id="careerPathsCard">
+          <div class="card-header">
+            <span class="card-icon">🎯</span>
+            <h3>Recommended Career Paths</h3>
+          </div>
+          <div class="career-paths-grid" id="careerPathsGrid">
+            <!-- Career path cards will be inserted here by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ---- SKILLS TO LEARN CARD ---- -->
+        <div class="result-card" id="skillsCard">
+          <div class="card-header">
+            <span class="card-icon">⚡</span>
+            <h3>Skills to Learn Next</h3>
+          </div>
+          <div class="skills-list" id="skillsList">
+            <!-- Skills will be inserted here by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ---- ROADMAP CARD ---- -->
+        <div class="result-card" id="roadmapCard">
+          <div class="card-header">
+            <span class="card-icon">🗺️</span>
+            <h3>Your Learning Roadmap</h3>
+          </div>
+          <div class="roadmap-timeline" id="roadmapTimeline">
+            <!-- Roadmap stages will be inserted here by JavaScript -->
+          </div>
+        </div>
+
+        <!-- ---- INTERNSHIP TIPS CARD ---- -->
+        <div class="result-card" id="tipsCard">
+          <div class="card-header">
+            <span class="card-icon">💡</span>
+            <h3>Internship & Job Tips</h3>
+          </div>
+          <ul class="tips-list" id="tipsList">
+            <!-- Tips will be inserted here by JavaScript -->
+          </ul>
+        </div>
+
+        <!-- ---- MOTIVATIONAL QUOTE ---- -->
+        <div class="quote-card" id="quoteCard">
+          <span class="quote-mark">"</span>
+          <p class="quote-text" id="quoteText"></p>
+        </div>
+      </section>
+
+      <!-- ---- ERROR SECTION (hidden initially) ---- -->
+      <div class="error-toast" id="errorToast" style="display: none">
+        <span class="error-icon">⚠️</span>
+        <span id="errorMessage">Something went wrong. Please try again.</span>
+        <button class="error-close" onclick="hideError()">×</button>
+      </div>
+    </main>
+
+    <!-- =============================================
+         FOOTER
+    ============================================= -->
+    <footer class="site-footer">
+      <p>Built with ❤️ using Claude AI · A BTech CS Project</p>
+    </footer>
+
+    <!-- Link to our JavaScript file -->
+    <script src="/js/main.js"></script>
+  </body>
+</html>
