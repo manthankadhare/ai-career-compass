@@ -1,179 +1,115 @@
-# 🎯 AI Career Growth Advisor
+# 🧭 AI Career Compass
 
-A beginner-friendly, full-stack AI web application that generates personalized career roadmaps using Claude AI.
+AI Career Compass is an AI-powered career guidance web application that generates personalized career roadmaps based on users' education, skills, interests, and career goals. It helps users identify skill gaps, explore career opportunities, and plan their learning journey.
 
-Built with: **HTML + CSS + JavaScript + Node.js + Express + Anthropic Claude API**
+Built with: **HTML5 + CSS3 + JavaScript + Node.js + Express + Groq API**
 
 ---
 
-## 📸 Features
+## ✨ Features
 
-- ✅ Beautiful dark-themed UI with amber accents
-- ✅ AI-powered career path suggestions (3 matched career paths)
-- ✅ Personalized skills-to-learn with free resources
-- ✅ 3-stage learning roadmap (Beginner → Intermediate → Advanced)
-- ✅ Internship & job hunting tips
-- ✅ Motivational quote
-- ✅ **Download as PDF** (with one click!)
-- ✅ Fully responsive (works on mobile too)
+- 🎯 **Tailored Career Match**: AI-driven analysis matching you with 3 high-potential career paths based on your profile.
+- ⚡ **Targeted Skill Recommendations**: Identifies priority skills to learn next with curated free learning resources.
+- 🗺️ **3-Stage Step-by-Step Roadmap**: Clear milestones spanning Beginner, Intermediate, and Advanced stages with real-world project recommendations.
+- 💡 **Actionable Career Tips**: Strategic resume, internship, and interview advice customized to your aspirations.
+- 📄 **One-Click PDF Export**: Download your complete personalized career roadmap as a PDF anytime.
+- 🌙 **Modern Glassmorphic Dark UI**: Responsive design with clean typography and seamless mobile support.
 
 ---
 
 ## 🗂️ Project Structure
 
 ```
-ai-career-advisor/
+ai-career-compass/
 │
-├── server.js              # Backend: Node.js + Express server
-├── package.json           # Project dependencies
-├── .env                   # Your API key goes here (never share this!)
-├── .env.example           # Template for .env
-├── .gitignore             # Ignores node_modules and .env
+├── server.js              # Express backend & Groq API integration
+├── package.json           # Node.js dependencies and scripts
+├── .env.example           # Environment variable template
+├── .gitignore             # Excluded files (node_modules, .env)
 │
-└── public/                # Frontend files (HTML/CSS/JS)
-    ├── index.html         # Main HTML page
+└── public/                # Frontend application
+    ├── index.html         # Main dashboard interface
     ├── css/
-    │   └── style.css      # All styles
+    │   └── style.css      # Custom styles & responsive theme
     └── js/
-        └── main.js        # Frontend JavaScript + PDF download
+        └── main.js        # Form handler, API calls & PDF export
 ```
 
 ---
 
-## ⚙️ Setup Instructions (Step by Step)
+## ⚙️ Quick Start Guide
 
-### Step 1: Install Node.js
-Download from https://nodejs.org (choose LTS version)
-Verify: `node --version` and `npm --version` in terminal
+### 1. Prerequisites
+- **Node.js** (v18 or higher): [Download Node.js](https://nodejs.org)
+- **Groq API Key**: [Get a free API key from Groq Console](https://console.groq.com)
 
-### Step 2: Get your FREE Anthropic API Key
-1. Go to https://console.anthropic.com
-2. Sign up for a free account
-3. Click "API Keys" → "Create Key"
-4. Copy the key (starts with `sk-ant-...`)
-
-### Step 3: Clone/Download this project
+### 2. Clone the Repository
 ```bash
-# If using git:
-git clone <your-repo-url>
-cd ai-career-advisor
-
-# Or just download and extract the ZIP file
+git clone https://github.com/manthankadhare/ai-career-compass.git
+cd ai-career-compass
 ```
 
-### Step 4: Install dependencies
+### 3. Install Dependencies
 ```bash
 npm install
 ```
-This downloads Express, CORS, dotenv, and the Anthropic SDK.
 
-### Step 5: Add your API key
-Open the `.env` file and replace `your_api_key_here`:
-```
-ANTHROPIC_API_KEY=sk-ant-your-actual-key-here
-PORT=3000
-```
-
-### Step 6: Start the server
+### 4. Configure Environment Variables
+Copy `.env.example` to a new `.env` file:
 ```bash
-# Normal start:
-node server.js
+cp .env.example .env
+```
+Open `.env` and insert your Groq API key:
+```env
+GROQ_API_KEY=gsk_your_groq_api_key_here
+PORT=5000
+```
 
-# OR for auto-restart during development:
+### 5. Launch the Application
+```bash
+# Production start:
+npm start
+
+# Development mode (with live reload):
 npm run dev
 ```
 
-### Step 7: Open in browser
-Go to: **http://localhost:3000**
+Visit **http://localhost:5000** in your web browser.
 
 ---
 
-## 🧪 Sample Input & Output
-
-### Sample Input:
-```
-Name: Priya Patel
-Education: 3rd Year BTech/BCA
-Skills: Python, basic HTML/CSS, C programming, Excel
-Interests: Data analysis, problem solving, finance, making dashboards
-Goals: I want to work at a data-driven company doing analysis or 
-       become a data scientist. Would love to work at Google or a fintech startup.
-Experience: Completed Python basics on Coursera, built a small expense tracker
-```
-
-### Sample Output (what AI returns):
-```json
-{
-  "summary": "Priya, you have a strong foundation...",
-  "careerPaths": [
-    { "title": "Data Scientist", "match": "High", ... },
-    { "title": "Business Analyst", "match": "High", ... },
-    { "title": "Machine Learning Engineer", "match": "Medium", ... }
-  ],
-  "skillsToLearn": [
-    { "skill": "SQL", "priority": "High", "freeResource": "Mode Analytics SQL Tutorial" },
-    { "skill": "Pandas & NumPy", "priority": "High", ... },
-    ...
-  ],
-  "roadmap": {
-    "beginner": { "duration": "0-3 months", "goals": [...], "project": "..." },
-    "intermediate": { "duration": "3-9 months", ... },
-    "advanced": { "duration": "9-18 months", ... }
-  },
-  "internshipTips": [...],
-  "motivationalQuote": "..."
-}
-```
-
----
-
-## 🔧 How It Works (Architecture)
+## 🔧 Architecture & Flow
 
 ```
-Browser (HTML/CSS/JS)
-        ↓ POST /api/career-advice (JSON data)
-Express Server (server.js)
-        ↓ API call with your prompt
-Claude AI (claude-sonnet-4)
-        ↓ Returns structured JSON career plan
-Express Server
-        ↓ Sends JSON response
-Browser
-        ↓ Displays results + PDF option
+[ User Input Form (HTML / CSS / JS) ]
+                   │
+                   ▼  POST /api/career-advice (JSON)
+[ Express.js Backend Server ]
+                   │
+                   ▼  Structured Prompt with JSON Mode
+[ Groq Cloud API (openai/gpt-oss-20b) ]
+                   │
+                   ▼  Structured Career Roadmap JSON
+[ Frontend Dashboard ]
+                   │
+        ┌──────────┴──────────┐
+        ▼                     ▼
+ [ Visual Roadmap ]    [ Download PDF ]
 ```
-
----
-
-## 🚀 Ideas to Improve Later
-
-1. **Add a database** — Save career plans with MongoDB or SQLite
-2. **User accounts** — Login with Google, save multiple plans
-3. **Compare plans** — Show side-by-side comparisons
-4. **Email the plan** — Use Nodemailer to email the PDF
-5. **LinkedIn integration** — Pull skills from LinkedIn profile
-6. **Progress tracker** — Check off completed roadmap goals
-7. **Dark/light mode toggle** — Add theme switcher
-8. **Share button** — Generate a public link to share the plan
-9. **Multiple AI models** — Let user choose between models
-10. **Chatbot mode** — Ask follow-up questions about the plan
 
 ---
 
 ## 🛠️ Troubleshooting
 
-| Problem | Solution |
-|---------|----------|
-| `ANTHROPIC_API_KEY not found` | Check your `.env` file has the key |
-| `npm: command not found` | Install Node.js from nodejs.org |
-| Port 3000 in use | Change `PORT=3001` in `.env` |
-| API returns 401 | Your API key is wrong or expired |
-| API returns 429 | Rate limited — wait 30 seconds and retry |
+| Issue | Resolution |
+|-------|------------|
+| `GROQ_API_KEY Missing` | Ensure your `.env` file exists in the root folder with a valid key. |
+| `Port 5000 in use` | Change `PORT=5001` (or another port) in your `.env` file. |
+| `API returns 401` | Verify your API key at [console.groq.com](https://console.groq.com). |
+| `API returns 429` | Groq rate limit reached — wait a few moments and try again. |
 
 ---
 
 ## 📄 License
-Free to use for educational purposes.
 
----
-
-Made with ❤️ — A BTech CS Final Year Project
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
