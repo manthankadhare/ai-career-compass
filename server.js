@@ -103,8 +103,9 @@ Respond ONLY in valid JSON format:
         { role: "system", content: "You are a career counselor. Always respond with valid JSON only. No markdown, no code fences, no extra text." },
         { role: "user", content: userPrompt }
       ],
+      response_format: { type: "json_object" },
       temperature: 0.7,
-      max_tokens: 2000,
+      max_tokens: 4096,
     });
 
     const responseText = completion.choices[0].message.content;
